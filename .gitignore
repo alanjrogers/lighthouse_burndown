@@ -1,2 +1,8 @@
+# Bundler
+.bundle
+
+# Mac
 .DS_Store
+
+# Misc
 tmp
