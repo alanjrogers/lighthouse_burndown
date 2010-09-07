@@ -2,6 +2,7 @@ $:.unshift File.expand_path(File.dirname(__FILE__))
 
 require "json"
 require "dm-core"
+require "dm-migrations"
 require "dm-validations"
 require "dm-types"
 require "dm-aggregates"
@@ -29,13 +30,13 @@ module Burndown
     elsif config.is_a?(Hash)
       self.config = config
     end
-    
+
     self.config[:demo_mode] = ENV['DEMO_MODE'] || self.config[:demo_mode]
 
     DataMapper.setup(:default, ENV['DATABASE_URL'] || self.config[:database_uri])
     DataMapper.auto_upgrade!
   end
-  
+
   def self.default_configuration
     @defaults ||= { :database_uri      => "sqlite3::memory:",
                     :log               => STDOUT,

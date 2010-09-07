@@ -1,55 +1,55 @@
 module Burndown
   class Milestone
     include DataMapper::Resource
-    
+
     property :id,                   Serial
-    property :remote_id,            Integer,  :nullable => false
+    property :remote_id,            Integer,  :required => true
     property :name,                 String
     property :activated_at,         DateTime
     property :closed_at,            DateTime
     property :due_on,               DateTime
     property :tickets_count,        Integer, :default => 0
     property :open_tickets_count,   Integer, :default => 0
-    
+
     belongs_to :project
     has n, :milestone_events
-    
+
     def start_date
       @@start_date ||= Date.parse(activated_at.to_s)
     end
-    
+
     def end_date
       due = due_on || Time.now.to_datetime
       closed = closed_at || Time.now.to_datetime
       Date.parse([due, closed].max.to_s)
     end
-    
+
     def past_due?
       due_on && due_on < Time.now.to_datetime
     end
-    
+
     def active?
       return true if open_tickets_count > 0
       return true if due_on && !past_due?
       return false
     end
-    
+
     def percent_complete
       return "N/A" if tickets_count <= 0;
       ((tickets_count - open_tickets_count).to_f/tickets_count.to_f*100).to_i
     end
-    
+
     def external_url
       "http://#{self.project.token.account}.#{Burndown.config[:lighthouse_host]}/projects/#{self.project.remote_id}/milestones/#{self.remote_id}"
     end
-    
+
      # Queries the API for each milestone (yikes!). Hope you don't have too many.
     def self.sync_with_lighthouse
       Milestone.all.each do |milestone|
         milestone.sync_with_lighthouse
       end
     end
-    
+
     # Syncs up the milestone with lighthouse updates
     def sync_with_lighthouse
       results = Lighthouse.get_milestone(self.remote_id, self.project.remote_id, self.project.token.account, self.project.token.token)
@@ -60,7 +60,7 @@ module Burndown
       else
         self.update_attributes(:closed_at => nil) if !self.closed_at.nil?
       end
-      
+
       results = Lighthouse.get_milestone_tickets(self.name, self.project.remote_id, self.project.token.account, self.project.token.token)
       ticket_ids = results["tickets"] ? results["tickets"].collect{ |t| t["number"] }.join(",") : ""
 
@@ -71,6 +71,6 @@ module Burndown
         self.milestone_events.create(:open_tickets => ticket_ids)
       end
     end
-    
+
   end
 end
