@@ -28,7 +28,11 @@
       else
         events = events.to_a.reverse
         last_events = events.size > 7 ? events.slice(-7, 7) : events.slice(-1*events.size, events.size - 1)
-        rate = (last_events.first.num_tickets_open - last_events.last.num_tickets_open).to_f/last_events.size
+        if last_events.nil?
+          rate = 0
+        else
+          rate = (last_events.first.num_tickets_open - last_events.last.num_tickets_open).to_f/last_events.size
+        end
         @estimated_rate[events.object_id] = rate
       end
       value = @last_value.nil? ? 0 : @last_value - rate

@@ -18,7 +18,7 @@
         <li>
           <h4><a href="/timeline/<%= milestone.id %>" class="<%= 'past_due' if milestone.past_due? %>"><%=h milestone.name %></a></h4>
           <p>
-            Tracking for <%= distance_of_time_in_words(milestone.activated_at, Time.now) %>.
+            Tracking for <%= distance_of_time_in_words(milestone.activated_at, Time.now) unless milestone.activated_at.nil? %>.
             <% if milestone.due_on && !milestone.past_due? %>
               Due in <%= distance_of_time_in_words(milestone.due_on, Time.now) %>.
             <% end %>
@@ -39,7 +39,7 @@
       <li>
         <h4><a href="/timeline/<%= milestone.id %>"><%=h milestone.name %></a></h4>
         <p>
-          Tracked for <%= distance_of_time_in_words(milestone.activated_at, milestone.closed_at) %>.
+          Tracked for <%= distance_of_time_in_words(milestone.activated_at, milestone.closed_at) unless milestone.closed_at.nil? %>.
         </p>
       </li>
       <% end %>
