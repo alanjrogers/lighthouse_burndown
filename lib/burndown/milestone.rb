@@ -67,14 +67,20 @@ module Burndown
       
       if results["tickets"]
         results["tickets"].each { |t| 
-            tag = t['tag']
-            if tag.nil?
+            tags = t['tag']
+            if tags.nil?
               next
             end
-            splitsville = tag.split(":")
+            all_tags = tags.split(" ")
+            if all_tags.nil?
+              next
+            end
+            all_tags.each do |tag|
+              splitsville = tag.split(":")
             
-            if splitsville.size == 2 and splitsville[0] == "hours"
-              total += splitsville[1].to_f
+              if splitsville.size == 2 and splitsville[0] == "hours"
+                total += splitsville[1].to_f
+              end
             end
           }
       end
