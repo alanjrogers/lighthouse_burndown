@@ -1,3 +1,5 @@
+require 'authorization'
+
 module Burndown
   class App < Sinatra::Base
     set :root,     File.dirname(__FILE__) + "/../.."
@@ -6,7 +8,13 @@ module Burndown
 
     include Burndown
     include Burndown::Helpers
-
+    
+    include Sinatra::Authorization
+    
+    before do 
+      require_authentication
+    end
+    
     get "/" do
       @projects = Project.all
       show :index
