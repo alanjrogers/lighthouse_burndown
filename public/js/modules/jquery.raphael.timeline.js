@@ -53,7 +53,7 @@ jQuery.fn.timelineGraph = function(){
         leave_timer,
         blanket = r.set();
     
-    label[0] = r.text(60, 10, "tickets").attr(txt).hide();
+    label[0] = r.text(60, 10, "hours left").attr(txt).hide();
     label[1] = r.text(60, 40).attr(txt1).attr({fill: "#666"}).hide();
     
     for(var i=0, ii=labels.length; i<ii; i++){
@@ -75,7 +75,7 @@ jQuery.fn.timelineGraph = function(){
             newcoord.x -= 114;
           }
           frame.show().animate({x: newcoord.x, y:newcoord.y}, 200*is_label_visible);
-          var label_text = data.type == 'future' ? data.value + " (estimated)" : data.value + " ticket" + ((data.value == 1) ? "" : "s");
+          var label_text = data.type == 'future' ? data.value + " (estimated)" : data.value + " hour" + ((data.value == 1) ? "" : "s");
           label[0].attr({text:label_text}).show().animate({x: newcoord.x*1 + 50, y:newcoord.y*1 + 12}, 200 *is_label_visible);
           label[1].attr({text: lbl.text}).show().animate({x: newcoord.x * 1 + 50, y: newcoord.y * 1 + 27}, 200 * is_label_visible);
           dot.attr("r", 7);

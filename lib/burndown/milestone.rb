@@ -54,21 +54,38 @@ module Burndown
     def sync_with_lighthouse
       results = Lighthouse.get_milestone(self.remote_id, self.project.remote_id, self.project.token.account, self.project.token.token)
       return false unless milestone = results["milestone"]
-      self.update_attributes(:name => milestone["title"], :due_on => milestone["due_on"], :tickets_count => milestone["tickets_count"], :open_tickets_count => milestone["open_tickets_count"])
+      self.update(:name => milestone["title"], :due_on => milestone["due_on"], :tickets_count => milestone["tickets_count"], :open_tickets_count => milestone["open_tickets_count"])
       if !self.active?
-        self.update_attributes(:closed_at => Time.now)
+        self.update(:closed_at => Time.now)
       else
-        self.update_attributes(:closed_at => nil) if !self.closed_at.nil?
+        self.update(:closed_at => nil) if !self.closed_at.nil?
       end
 
       results = Lighthouse.get_milestone_tickets(self.name, self.project.remote_id, self.project.token.account, self.project.token.token)
       ticket_ids = results["tickets"] ? results["tickets"].collect{ |t| t["number"] }.join(",") : ""
-
+      total = 0.0
+      
+      if results["tickets"]
+        results["tickets"].each { |t| 
+            tag = t['tag']
+            if tag.nil?
+              next
+            end
+            splitsville = tag.split(":")
+            
+            if splitsville.size == 2 and splitsville[0] == "hours"
+              total += splitsville[1].to_f
+            end
+          }
+      end
+      
+      
+      
       existing_event = self.milestone_events.first(:created_on.gte => Date.today, :milestone_id => self.id)
       if (existing_event)
-        existing_event.update_attributes(:open_tickets => ticket_ids)
+        existing_event.update(:open_tickets => ticket_ids, :hours_left => total)
       else
-        self.milestone_events.create(:open_tickets => ticket_ids)
+        self.milestone_events.create(:open_tickets => ticket_ids, :hours_left => total)
       end
     end
 
