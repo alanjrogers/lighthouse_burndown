@@ -88,9 +88,10 @@ module Burndown
         self.update(:closed_at => nil) if !self.closed_at.nil?
       end
 
-      results = Lighthouse.get_milestone_tickets(self.name, self.project.remote_id, self.project.token.account, self.project.token.token)
+      results = Lighthouse.get_milestone_tickets(self.name, self.project.remote_id, self.project.token.account, self.project.token.token, self.tickets_count)
       ticket_ids = results["tickets"] ? results["tickets"].collect{ |t| t["number"] }.join(",") : ""
       total = 0.0
+      
       
       if results["tickets"]
         results["tickets"].each { |t| 
@@ -111,8 +112,6 @@ module Burndown
             end
           }
       end
-      
-      
       
       existing_event = self.milestone_events.first(:created_on.gte => Date.today, :milestone_id => self.id)
       if (existing_event)

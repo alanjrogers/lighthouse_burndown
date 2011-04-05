@@ -1,27 +1,21 @@
 source :rubygems
 
+
 # Framework
-gem 'datamapper', '1.0.0'
-gem 'sinatra', '1.0'
-gem 'httparty', '0.6.1'
+gem 'datamapper'
+gem 'sinatra'
+gem 'httparty'
 
 gem 'sinatra-reloader'
 
-#gem 'activesupport'
+gem 'activesupport'
+gem 'i18n'
 
-# Development
-group :development do
-  gem 'dm-mysql-adapter', '1.0.0'
-end
-
-# Heroku
-group :production do
-  gem 'dm-postgres-adapter', '1.0.0'
-end
+gem 'dm-postgres-adapter'
 
 group :test do
   gem 'rr'
   gem 'mocha'
-  gem 'dm-sweatshop', '1.0.0'
+  gem 'dm-sweatshop'
   gem 'webrat'
 end

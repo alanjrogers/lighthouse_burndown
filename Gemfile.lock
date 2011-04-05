@@ -7,6 +7,7 @@ GEM
     RubyInline (3.9.0)
       ZenTest (~> 4.3)
     ZenTest (4.5.0)
+    activesupport (3.0.5)
     addressable (2.2.4)
     backports (2.0.3)
     crack (0.1.8)
@@ -36,9 +37,6 @@ GEM
       dm-core (~> 1.0.0)
     dm-migrations (1.0.0)
       dm-core (~> 1.0.0)
-    dm-mysql-adapter (1.0.0)
-      dm-do-adapter (~> 1.0.0)
-      do_mysql (~> 0.10.2)
     dm-postgres-adapter (1.0.0)
       dm-do-adapter (~> 1.0.0)
       do_postgres (~> 0.10.2)
@@ -61,14 +59,13 @@ GEM
       uuidtools (~> 2.1.1)
     dm-validations (1.0.0)
       dm-core (~> 1.0.0)
-    do_mysql (0.10.3)
-      data_objects (= 0.10.3)
     do_postgres (0.10.3)
       data_objects (= 0.10.3)
     extlib (0.9.15)
     fastercsv (1.5.4)
     httparty (0.6.1)
       crack (= 0.1.8)
+    i18n (0.5.0)
     json_pure (1.4.6)
     mocha (0.9.12)
     monkey-lib (0.5.4)
@@ -104,13 +101,14 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  datamapper (= 1.0.0)
-  dm-mysql-adapter (= 1.0.0)
-  dm-postgres-adapter (= 1.0.0)
-  dm-sweatshop (= 1.0.0)
-  httparty (= 0.6.1)
+  activesupport
+  datamapper
+  dm-postgres-adapter
+  dm-sweatshop
+  httparty
+  i18n
   mocha
   rr
-  sinatra (= 1.0)
+  sinatra
   sinatra-reloader
   webrat
