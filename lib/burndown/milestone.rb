@@ -48,7 +48,7 @@ module Burndown
         return 0
       end
       
-      percentage = ((last_event.hours_left.to_f - first_event.hours_left.to_f)/(first_event.hours_left.to_f)*100).to_i
+      percentage = ((first_event.hours_left.to_f - last_event.hours_left.to_f)/(first_event.hours_left.to_f)*100).to_i
       
       if percentage > 100
         percentage = 100
