@@ -10,7 +10,7 @@
     <li><strong><%= @milestone.percent_time_complete %>%</strong> <span>percent time complete</span></li>
     <li><strong><%= @milestone.open_tickets_count %></strong> <span>open tickets</span></li>
     <li><strong><%= @milestone.time_left %></strong> <span>hours left</span></li>
-    <li><strong><%= @milestone.due_on ? @milestone.due_on.strftime("%m/%d") : "Not Due" %></strong> <span>due date</span></li>
+    <li><strong><%= @milestone.due_on ? @milestone.due_on.strftime("%D") : "Not Due" %></strong> <span>due date</span></li>
     <li><strong><%= @milestone.tickets_count %></strong> <span>total tickets</span></li>
   
   </ul>
@@ -48,7 +48,7 @@
     <tfoot>
       <tr>
         <% @milestone.start_date.upto(@milestone.end_date) do |day| %>
-          <th><%= day.strftime("%m/%d") %></th>
+          <th><%= day.strftime("%d/%m") %></th>
         <% end %>
       </tr>
     </tfoot>
