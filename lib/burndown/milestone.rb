@@ -38,6 +38,29 @@ module Burndown
       return "N/A" if tickets_count <= 0;
       ((tickets_count - open_tickets_count).to_f/tickets_count.to_f*100).to_i
     end
+    
+    def percent_time_complete
+      return "N/A" if tickets_count <= 0;
+      first_event = self.milestone_events.first(:order => [:created_on.asc])
+      last_event = self.milestone_events.first(:order => [:created_on.desc])
+      
+      if last_event == first_event
+        return 0
+      end
+      
+      percentage = ((last_event.hours_left.to_f)/(first_event.hours_left.to_f)*100).to_i
+      
+      if percentage > 100
+        percentage = 100
+      end
+      
+      (last_event.nil? or first_event.nil?) ? "N/A" : percentage
+    end
+    
+    def time_left
+      last_event = self.milestone_events.first(:order => [:created_on.desc])
+      last_event.nil? ? "N/A" : last_event.hours_left
+    end
 
     def external_url
       "http://#{self.project.token.account}.#{Burndown.config[:lighthouse_host]}/projects/#{self.project.remote_id}/milestones/#{self.remote_id}"

@@ -5,6 +5,10 @@ gem 'datamapper', '1.0.0'
 gem 'sinatra', '1.0'
 gem 'httparty', '0.6.1'
 
+gem 'sinatra-reloader'
+
+#gem 'activesupport'
+
 # Development
 group :development do
   gem 'dm-mysql-adapter', '1.0.0'

@@ -46,4 +46,27 @@
     </ul>
   </li>
   <% end %>
+  <li>
+    <h3>Configuration</h3>
+    <ul class="configuration">
+      <li>
+        <p>
+          Hours per day: <%= @project.hours_per_day %>
+          <div class="form">
+            <form action="/hours_per_day/<%= @project.id %>" method="post" id="hours_form">
+              <p class="message" style="display:none"></p>
+
+              <p><input type="text" name="hours_per_day" class="short" placeholder="8" value="<%= @project.hours_per_day %>" /></p>
+              <ul class="form-actions">
+                <li><button type="submit">Update Hours per Day</button></li>
+              </ul>
+              
+              <div class="loader" style="display:none">
+                Updating hours per day for project…
+              </div>
+            </form>
+        </p>
+      </li>
+    </ul>
+  </li>
 </ul>

@@ -260,6 +260,10 @@ ul.projects ul.milestones h4 a.past_due, .past_due{
   color:#860000;
 }
 
+ul.projects ul.configuration li{
+    border:none;
+}
+
 /* @end */
 
 /*------------------------------------------------------------------------------------
@@ -498,7 +502,7 @@ ul.form-actions button{
 
 .progress ul.stats{
   margin:0 0 10px 0;
-  height:50px;
+  height:100px;
 }
 .progress ul.stats li{
   list-style-type:none;
@@ -508,8 +512,10 @@ ul.form-actions button{
   height:50px;
   text-align:center;
   border-left:1px solid #ddd;
+  margin-top: 10px;
 }
-.progress ul.stats li:first-child{
+
+.progress ul.stats li:nth-child(3n+1){
   border-left:none;
 }
 .progress ul.stats strong{
@@ -522,6 +528,7 @@ ul.form-actions button{
 }
 
 .progress-bar{
+  margin-top:30px;
   height:25px;
   background:#f1f1f1;
   border:2px solid #eee;
@@ -530,6 +537,10 @@ ul.form-actions button{
   display:block;
   height:25px;
   background:#009936;
+}
+
+.progress-bar .time{
+  background:#003699;
 }
 
 /* @end */

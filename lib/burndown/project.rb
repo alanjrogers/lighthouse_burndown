@@ -7,6 +7,7 @@ module Burndown
     property :name,           String,   :required => true
     property :active_since,   DateTime
     property :secret_hash,    String
+    property  :hours_per_day,  Float
 
     belongs_to :token
     has n, :milestones

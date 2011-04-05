@@ -29,5 +29,9 @@ module Burndown
       tickets_opened - tickets_closed
     end
     
+    def hours_change
+      self.hours_left - prev_record.hours_left
+    end
+    
   end
 end

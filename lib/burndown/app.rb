@@ -5,6 +5,11 @@ module Burndown
     set :root,     File.dirname(__FILE__) + "/../.."
     set :app_file, __FILE__
     enable :sessions
+    
+    configure(:development) do
+      register Sinatra::Reloader
+      also_reload "lib/**/*.rb"
+    end
 
     include Burndown
     include Burndown::Helpers
@@ -31,6 +36,19 @@ module Burndown
         pos
       }
       show :project
+    end
+    
+    # updates hours_per_day for a project (AJAX method)
+    post "/hours_per_day/:id" do
+      @project = Project.get(params[:id])
+      
+      @project.hours_per_day = params[:hours_per_day].to_f
+      
+      if @project.save
+        status 200
+      else
+        status 500
+      end
     end
 
     get "/timeline/:id" do

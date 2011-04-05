@@ -8,6 +8,7 @@ require "dm-types"
 require "dm-aggregates"
 require "dm-timestamps"
 require "sinatra/base"
+require "sinatra/reloader" 
 
 require "yaml"
 require "logger"

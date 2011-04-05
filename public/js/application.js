@@ -2,6 +2,8 @@ $(document).ready(function(){
   $('table.timeline').timelineGraph();
   $('.tab-group').tabs();
   $('#token_form').tokenForm();
+  $('#hours_form').hoursForm();
+  
   
   var body_id = document.body.id;
   switch(body_id){

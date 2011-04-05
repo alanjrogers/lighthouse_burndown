@@ -37,6 +37,11 @@ module Burndown
       Date.parse(day.to_s) > Date.today
     end
     
+    def is_weekday?(day)
+      weekday = Date.parse(day.to_s).wday
+      not (weekday == 0 or weekday == 6)
+    end
+    
     # Ganked from Rails
     def distance_of_time_in_words(from_time, to_time = 0, include_seconds = false, options = {})
       from_time = from_time.to_time if from_time.respond_to?(:to_time)

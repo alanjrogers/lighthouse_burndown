@@ -6,38 +6,38 @@
 <% if @milestone.tickets_count > 0 %>
 <div class="progress">
   <ul class="stats">
-    <li><strong><%= @milestone.percent_complete %>%</strong> <span>percent complete</span></li>
+    <li><strong><%= @milestone.percent_complete %>%</strong> <span>percent tickets complete</span></li>
+    <li><strong><%= @milestone.percent_time_complete %>%</strong> <span>percent time complete</span></li>
     <li><strong><%= @milestone.open_tickets_count %></strong> <span>open tickets</span></li>
+    <li><strong><%= @milestone.time_left %></strong> <span>hours left</span></li>
     <li><strong><%= @milestone.due_on ? @milestone.due_on.strftime("%m/%d") : "Not Due" %></strong> <span>due date</span></li>
+    <li><strong><%= @milestone.tickets_count %></strong> <span>total tickets</span></li>
+  
   </ul>
   <div class="progress-bar">
     <span class="bar" style="width:<%= @milestone.percent_complete %>%"></span>
   </div>
+  <div class="progress-bar">
+    <span class="bar time" style="width:<%= @milestone.percent_time_complete %>%"></span>
+  </div>
 </div>
 <% end %>
 <%
-  @estimated_rate = {}
   @last_value = nil
   def day_event_value(events, day)
     day_event = events.select{ |e| e.created_on.strftime("%B %e") == day.strftime("%B %e") }[0]
     value = day_event ? day_event.hours_left : 0.0
     # Are we past today? Should we project a trajectory?
-    @last_value = value
-    return value.to_f
     if in_future?(day)
-      if @estimated_rate[events.object_id]
-        rate = @estimated_rate[events.object_id]
+      if is_weekday?(day)
+        value = @last_value - (@milestone.project.hours_per_day.nil? ? 0.0 : @milestone.project.hours_per_day)
       else
-        events = events.to_a.reverse
-        last_events = events.size > 7 ? events.slice(-7, 7) : events.slice(-1*events.size, events.size - 1)
-        if last_events.nil?
-          rate = 0
-        else
-          rate = (last_events.first.num_tickets_open - last_events.last.num_tickets_open).to_f/last_events.size
-        end
-        @estimated_rate[events.object_id] = rate
+        value = @last_value
       end
-      value = @last_value.nil? ? 0 : @last_value - rate
+      
+      if value < 0.0
+        value = 0.0
+      end
     end
     @last_value = value
     value.to_f
