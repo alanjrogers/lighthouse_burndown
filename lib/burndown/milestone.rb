@@ -92,7 +92,6 @@ module Burndown
       ticket_ids = results["tickets"] ? results["tickets"].collect{ |t| t["number"] }.join(",") : ""
       total = 0.0
       
-      
       if results["tickets"]
         results["tickets"].each { |t| 
             tags = t['tag']
