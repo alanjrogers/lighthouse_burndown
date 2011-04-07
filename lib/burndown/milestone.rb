@@ -94,7 +94,7 @@ module Burndown
       
       if results["tickets"]
         results["tickets"].each { |t|
-            if t['state'] == 'resolved' then
+            if t['state'] == 'resolved' or t['state'] == 'invalid' then
               next
             end
             tags = t['tag']
