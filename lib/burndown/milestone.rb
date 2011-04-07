@@ -93,7 +93,10 @@ module Burndown
       total = 0.0
       
       if results["tickets"]
-        results["tickets"].each { |t| 
+        results["tickets"].each { |t|
+            if t['state'] == 'resolved' then
+              next
+            end
             tags = t['tag']
             if tags.nil?
               next
