@@ -73,7 +73,9 @@ module Burndown
      # Queries the API for each milestone (yikes!). Hope you don't have too many.
     def self.sync_with_lighthouse
       Milestone.all.each do |milestone|
-        milestone.sync_with_lighthouse
+        if milestone.project.active?
+          milestone.sync_with_lighthouse
+        end
       end
     end
 

@@ -7,7 +7,7 @@ module Burndown
     property :name,           String,   :required => true
     property :active_since,   DateTime
     property :secret_hash,    String
-    property  :hours_per_day,  Float
+    property :hours_per_day,  Float
 
     belongs_to :token
     has n, :milestones
@@ -33,6 +33,12 @@ module Burndown
       p.create_starting_milestones!
       p.save
       p
+    end
+    
+    # De-activates (stops tracking) a remote project
+    def self.deactivate_remote(project_id)
+      p = Project.get(project_id)
+      p.destroy
     end
 
     # Asks the API for existing milestones and saves them for later use

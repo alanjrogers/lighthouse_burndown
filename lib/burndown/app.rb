@@ -13,7 +13,6 @@ module Burndown
 
     include Burndown
     include Burndown::Helpers
-    
     include Sinatra::Authorization
     
     before do 
@@ -79,6 +78,13 @@ module Burndown
       else
         status 500
       end
+    end
+    
+    post "/project/:project_id/deactivate" do
+      return if Burndown.config[:demo_mode]
+
+      Project.deactivate_remote(params[:project_id])
+      redirect "/setup"
     end
 
     post "/projects" do
