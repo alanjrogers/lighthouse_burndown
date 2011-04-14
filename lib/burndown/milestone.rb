@@ -48,6 +48,10 @@ module Burndown
         return 0
       end
       
+      if first_event.hours_left.to_f == 0.0
+        return "N/A"
+      end
+      
       percentage = ((first_event.hours_left.to_f - last_event.hours_left.to_f)/(first_event.hours_left.to_f)*100).to_i
       
       if percentage > 100
