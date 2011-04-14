@@ -127,6 +127,12 @@ module Burndown
       else
         self.milestone_events.create(:open_tickets => ticket_ids, :hours_left => total)
       end
+      
+      first_milestone = self.milestone_events.first(:order => [:created_on.desc])
+      
+      if first_milestone.created_on < self.activated_at
+        self.activated_at = first_milestone.created_on
+      end
     end
 
   end
