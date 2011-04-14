@@ -25,6 +25,7 @@
           <span class="accesslevel"><%= token.read_write %></span>
           <h2><%=h token.account %>.<%= Burndown.config[:lighthouse_host] %></h2>
           <p><%= token.token %></p>
+          <p><%= link_to "Delete", "/token/#{token.id}/delete" %></p>
         </div>
       
         <% Burndown::Project.for_token(token).each do |project| %>

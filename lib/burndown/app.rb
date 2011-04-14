@@ -55,6 +55,12 @@ module Burndown
       @timeline_events = @milestone.milestone_events(:order => [:created_on.desc])
       show :timeline
     end
+    
+    get "/timeline/:id/refresh" do
+      @milestone = Milestone.get(params[:id])
+      @milestone.sync_with_lighthouse
+      redirect "/timeline/#{@milestone.id}"
+    end
 
     get "/setup" do
       @tokens = Token.all
@@ -78,6 +84,16 @@ module Burndown
       else
         status 500
       end
+    end
+    
+    get "/token/:id/delete" do
+      return if Burndown.config[:demo_mode]
+      
+      @token = Token.get(params[:id])
+      
+      @token.destroy
+      
+      redirect "/setup"
     end
     
     post "/project/:project_id/deactivate" do

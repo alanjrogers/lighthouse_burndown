@@ -2,6 +2,7 @@
               :breadcrumb => [ link_to(h(@milestone.project.name), "/"), link_to(h(@milestone.name), "/project/#{@milestone.project.id}") ] %>
 
 <a href="<%= @milestone.external_url %>" class="lh-link">View in Lighthouse &rarr;</a>
+<a href='<%= "/timeline/#{@milestone.id}/refresh" %>' class="refresh-link">Refresh (will be slow!)</a>
 
 <% if @milestone.tickets_count > 0 %>
 <div class="progress">
