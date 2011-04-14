@@ -29,6 +29,7 @@
         </div>
       
         <% Burndown::Project.for_token(token).each do |project| %>
+          <% if project.token == token %>
           <div class="project <%= project.active? ? 'active' : 'inactive' %>">
             <span class="state">
               <% if project.active? %>
@@ -45,6 +46,7 @@
             </span>
             <h3><%=h project.name %></h3>
           </div>
+          <% end %>
         <% end %>
       </div><!-- /.tab-content -->
     <% end %>

@@ -17,7 +17,7 @@ module Burndown
       result = Lighthouse.get_projects(token.account, token.token)
       arr = []
       (result["projects"] || []).each do |project|
-        p = Project.first(:remote_id => project["id"].to_i) || Project.new(:name => project["name"], :remote_id => project["id"])
+        p = Project.first(:remote_id => project["id"].to_i, :token => token) || Project.new(:name => project["name"], :remote_id => project["id"], :token => token)
         arr.push(p)
       end
       arr
