@@ -40,7 +40,7 @@ module Burndown
     end
     
     def percent_time_complete
-      return "N/A" if tickets_count <= 0;
+      return 0 if tickets_count <= 0;
       first_event = self.milestone_events.first(:order => [:created_on.asc])
       last_event = self.milestone_events.first(:order => [:created_on.desc])
       
@@ -49,7 +49,7 @@ module Burndown
       end
       
       if first_event.hours_left.to_f == 0.0
-        return "N/A"
+        return 0
       end
       
       percentage = ((first_event.hours_left.to_f - last_event.hours_left.to_f)/(first_event.hours_left.to_f)*100).to_i
