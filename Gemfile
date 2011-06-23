@@ -4,6 +4,7 @@ source :rubygems
 gem 'datamapper'
 gem 'sinatra'
 gem 'httparty'
+gem 'extlib'
 
 gem 'sinatra-reloader'
 
