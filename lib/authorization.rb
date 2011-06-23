@@ -20,7 +20,7 @@ module Sinatra
  
   def authorize(username, password)
     # Insert your logic here to determine if username/password is good
-    if username == 'admin' and password == "f33dme"
+    if username == Burndown::App.bd_username and password == Burndown::App.bd_password
       true
     else
       false
