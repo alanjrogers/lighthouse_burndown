@@ -1,6 +1,5 @@
 source :rubygems
 
-
 # Framework
 gem 'datamapper'
 gem 'sinatra'
