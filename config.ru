@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require "rubygems"
 require "bundler/setup"
-require "lib/burndown"
+require "./lib/burndown"
 
 # Load configuration and initialize Burndown
 Burndown.new(File.dirname(__FILE__) + "/config/config.yml")

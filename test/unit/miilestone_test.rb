@@ -50,7 +50,7 @@ class MiilestoneTest < Test::Unit::TestCase
   
   it "knows the end date when not much is known" do
     m = Milestone.make(:closed_at => nil, :due_on => nil)
-    m.end_date.strftime("%m/%d/%y").should == Time.now.strftime("%m/%d/%y")
+    m.end_date.strftime("%m/%d/%y").should == Time.now.to_datetime.strftime("%m/%d/%y")
   end
   
   it "is marked active when there are open tickets and it has previously been closed" do

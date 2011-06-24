@@ -1,5 +1,7 @@
 source :rubygems
 
+gem 'rack'
+
 # Framework
 gem 'datamapper'
 gem 'sinatra'

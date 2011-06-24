@@ -9,7 +9,7 @@ GEM
     ZenTest (4.5.0)
     activesupport (3.0.9)
     addressable (2.2.6)
-    backports (2.2.1)
+    backports (2.3.0)
     bcrypt-ruby (2.1.4)
     crack (0.1.8)
     data_objects (0.10.6)
@@ -111,6 +111,7 @@ DEPENDENCIES
   httparty
   i18n
   mocha
+  rack
   rr
   sinatra
   sinatra-reloader

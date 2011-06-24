@@ -56,7 +56,7 @@ module Burndown
     end
 
     def active?
-      active_since && active_since <= Time.now
+      active_since && active_since <= Time.now.to_datetime
     end
   end
 end

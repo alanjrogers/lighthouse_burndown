@@ -19,13 +19,13 @@ module Burndown
     end
 
     def end_date
-      due = due_on || Time.now
-      closed = closed_at || Time.now
+      due = due_on || Time.now.to_datetime
+      closed = closed_at || Time.now.to_datetime
       Date.parse([due, closed].max.to_s)
     end
 
     def past_due?
-      due_on && due_on < Time.now
+      due_on && due_on < Time.now.to_datetime
     end
 
     def active?
