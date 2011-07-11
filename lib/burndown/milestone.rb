@@ -37,8 +37,8 @@ module Burndown
 
     def activate
         self.activated_at = Time.now()
-        self.sync_with_lighthouse
         self.save
+        self.sync_with_lighthouse
     end
 
     def percent_complete

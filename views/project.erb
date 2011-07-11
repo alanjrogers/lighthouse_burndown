@@ -11,7 +11,7 @@
       <ul class="milestones">
         <% @milestones.each do |milestone| %>
         <%
-          if not milestone.closed_at.nil?
+          if not milestone.closed_at.nil? and not milestone.activated_at.nil?
               @closed_milestones.push(milestone)
               next
           end
