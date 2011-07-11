@@ -52,9 +52,9 @@ module Burndown
     def update_milestones!
         result = Lighthouse.get_milestones(self.remote_id, self.token.account, self.token.token)
         (result["milestones"] || []).each do |milestone|
-            existing = self.milestones.get(:remote_id => milestone["id"])
-            if not existing.nil?
-                existing.sync_with_lighthouse
+            existing = Milestone.all(:remote_id => milestone["id"])
+            if existing.count > 0
+                existing[0].sync_with_lighthouse
             else
                 m = self.milestones.create(:name => milestone["title"], :remote_id => milestone["id"], :due_on => milestone["due_on"])
             end

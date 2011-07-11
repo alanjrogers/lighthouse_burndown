@@ -3,7 +3,7 @@ module Burndown
     include DataMapper::Resource
 
     property :id,                   Serial
-    property :remote_id,            Integer,  :required => true
+    property :remote_id,            Integer,  :required => true, :index => :unique
     property :name,                 String
     property :activated_at,         DateTime
     property :closed_at,            DateTime
@@ -136,8 +136,9 @@ module Burndown
       end
       
       first_milestone = self.milestone_events.first(:order => [:created_on.desc])
+
       
-      if first_milestone.created_on < self.activated_at
+      if not self.activated_at.nil? and first_milestone.created_on < self.activated_at
         self.activated_at = first_milestone.created_on
       end
     end

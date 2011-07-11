@@ -3,24 +3,25 @@
 
 <% @inactive_milestones = [] %>
 <% @closed_milestones = [] %>
+<% @active_milestones = [] %>
 <ul class="projects">
   <li>
     <h3><%=h @project.name %></h3>
     <p><%= @milestones.select{|m| m.active? }.size %> active burndown<%= 's' unless @milestones.size == 1 %></p>
     <% if @milestones.any? %>
       <ul class="milestones">
-        <% @milestones.each do |milestone| %>
-        <%
-          if not milestone.closed_at.nil? and not milestone.activated_at.nil?
-              @closed_milestones.push(milestone)
-              next
-          end
-        
-          if !milestone.active?
-            @inactive_milestones.push(milestone)
-            next
+        <% @milestones.each do |milestone| 
+            if not milestone.active? and milestone.activated_at.nil?
+                @inactive_milestones.push(milestone)
+            elsif not milestone.active?
+                @closed_milestones.push(milestone)
+            else
+                @active_milestones.push(milestone)
+            end
           end
         %>
+        <% if @active_milestones.any? %>
+        <% @active_milestones.each do |milestone| %>
         <li>
           <h4><a href="/timeline/<%= milestone.id %>" class="<%= 'past_due' if milestone.past_due? %>"><%=h milestone.name %></a></h4>
           <p>
@@ -31,6 +32,7 @@
             <% if milestone.past_due? %><span class="past_due">Late by <%= distance_of_time_in_words(milestone.due_on, Time.now) %></span><% end %>
           </p>
         </li>
+        <% end %>
         <% end %>
       </ul>
     <% else %>
@@ -57,13 +59,9 @@
       <% @closed_milestones.each do |milestone| %>
       <li>
         <h4><a href="/timeline/<%= milestone.id %>"><%=h milestone.name %></a></h4>
-        <% if not milestone.activated_at.nil? %>
         <p>
           Tracked for <%= distance_of_time_in_words(milestone.activated_at, milestone.closed_at) unless milestone.closed_at.nil? %>.
         </p>
-        <% else %>
-        <p><a href="/milestone/<%= milestone.id %>/activate">Start Tracking</a></p>
-        <% end %>
       </li>
       <% end %>
     </ul>
