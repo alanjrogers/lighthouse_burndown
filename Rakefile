@@ -29,7 +29,7 @@ namespace :app do
 end
 
 task :environment do
-  require "lib/burndown"
+  require "./lib/burndown"
   Burndown.new(File.dirname(__FILE__) + "/config/config.yml")
 end
 
