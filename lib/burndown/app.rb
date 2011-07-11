@@ -24,6 +24,12 @@ module Burndown
       show :index
     end
 
+    get "/milestone/:id/activate" do
+        milestone = Milestone.get(params[:id])
+        milestone.activate
+        redirect "/project/#{milestone.project.id}"
+    end
+
     get "/project/:id" do
       @project = Project.get(params[:id])
       @milestones = @project.milestones.all(:order => [:due_on.asc]).sort { |x, y|

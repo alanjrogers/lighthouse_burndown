@@ -45,10 +45,36 @@ module Burndown
     def create_starting_milestones!
       result = Lighthouse.get_milestones(self.remote_id, self.token.account, self.token.token)
       (result["milestones"] || []).each do |milestone|
-        m = self.milestones.create(:name => milestone["title"], :remote_id => milestone["id"], :activated_at => Time.now, :due_on => milestone["due_on"])
+        m = self.milestones.create(:name => milestone["title"], :remote_id => milestone["id"], :due_on => milestone["due_on"])
       end
     end
 
+    def update_milestones!
+        result = Lighthouse.get_milestones(self.remote_id, self.token.account, self.token.token)
+        (result["milestones"] || []).each do |milestone|
+            existing = self.milestones.get(:remote_id => milestone["id"])
+            if not existing.nil?
+                if existing.active?
+                    existing.sync_with_lighthouse
+                end
+            else
+                m = self.milestones.create(:name => milestone["title"], :remote_id => milestone["id"], :due_on => milestone["due_on"])
+            end
+        end
+    end
+
+   # Queries the API for each milestone (yikes!). Hope you don't have too many.
+    def self.sync_with_lighthouse
+      Project.all.each do |project|
+        if project.active?
+          project.milestones.each do |milestone|
+              if milestone.active?
+                  milestone.sync_with_lighthouse
+              end
+          end
+        end
+      end
+    end
     # Creates a lighthouse callback
     def create_callback!(host)
       self.secret_hash = Digest::SHA1.hexdigest("lighthouse#{self.id}#{rand(10000)}callback")

@@ -1,6 +1,7 @@
 <% page_info :title => "Pick a Milestone",
               :breadcrumb => [ link_to(h(@project.name), "/") ] %>
 
+<% @inactive_milestones = [] %>
 <% @closed_milestones = [] %>
 <ul class="projects">
   <li>
@@ -10,8 +11,13 @@
       <ul class="milestones">
         <% @milestones.each do |milestone| %>
         <%
+          if not milestone.closed_at.nil?
+              @closed_milestones.push(milestone)
+              next
+          end
+        
           if !milestone.active?
-            @closed_milestones.push(milestone)
+            @inactive_milestones.push(milestone)
             next
           end
         %>
@@ -31,21 +37,39 @@
       <p>You don't have any milestones setup, so you can't use burndown charts!</p>
     <% end %>
   </li>
-  <% if @closed_milestones.any? %>
+  <% if @inactive_milestones.any? %>
+  <li>
+    <h3>Inactive Milestones</h3>
+    <ul class="milestones">
+      <% @inactive_milestones.each do |milestone| %>
+      <li>
+        <h4><%=h milestone.name %></h4>
+        <p><a href="/milestone/<%= milestone.id %>/activate">Start Tracking</a></p>
+      </li>
+      <% end %>
+    </ul>
+  </li>
+  <% end %>
+   <% if @closed_milestones.any? %>
   <li>
     <h3>Closed Milestones</h3>
     <ul class="milestones">
       <% @closed_milestones.each do |milestone| %>
       <li>
         <h4><a href="/timeline/<%= milestone.id %>"><%=h milestone.name %></a></h4>
+        <% if not milestone.activated_at.nil? %>
         <p>
           Tracked for <%= distance_of_time_in_words(milestone.activated_at, milestone.closed_at) unless milestone.closed_at.nil? %>.
         </p>
+        <% else %>
+        <p><a href="/milestone/<%= milestone.id %>/activate">Start Tracking</a></p>
+        <% end %>
       </li>
       <% end %>
     </ul>
   </li>
   <% end %>
+
   <li>
     <h3>Configuration</h3>
     <ul class="configuration">

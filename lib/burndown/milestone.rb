@@ -29,9 +29,16 @@ module Burndown
     end
 
     def active?
+      return false if self.activated_at.nil?
       return true if open_tickets_count > 0
       return true if due_on && !past_due?
       return false
+    end
+
+    def activate
+        self.activated_at = Time.now()
+        self.sync_with_lighthouse
+        self.save
     end
 
     def percent_complete
