@@ -6,7 +6,7 @@
 <% @active_milestones = [] %>
 <ul class="projects">
   <li>
-    <h3><%=h @project.name %></h3>
+    <h3><%=h @project.name %><span id='refresh'><a href="/project/<%= @project.id %>/refresh">Refresh</a></span></h3>
     <p><%= @milestones.select{|m| m.active? }.size %> active burndown<%= 's' unless @milestones.size == 1 %></p>
     <% if @milestones.any? %>
       <ul class="milestones">

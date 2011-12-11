@@ -245,6 +245,10 @@ ul.projects li h3 a em{
   color:#999;
 }
 
+ul.projects span#refresh {
+    float :right;
+}
+
 ul.projects ul.milestones{
   border-top:1px solid #ddd;
 }

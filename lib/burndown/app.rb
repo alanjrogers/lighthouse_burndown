@@ -42,6 +42,13 @@ module Burndown
       }
       show :project
     end
+   
+    get "/project/:id/refresh" do
+        @project = Project.get(params[:id])
+        @project.update_milestones!
+
+        redirect "project/#{@project.id}"
+    end
     
     # updates hours_per_day for a project (AJAX method)
     post "/hours_per_day/:id" do
