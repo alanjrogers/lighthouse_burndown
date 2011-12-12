@@ -5,6 +5,7 @@ module Burndown
     property :id,               Serial
     property :open_tickets,     Text,   :default => "" # comma-separated ids: 1,2,3
     property :hours_left,       Float, :default => 0.0
+    property :hours_elapsed,    Float, :default => 0.0
     property :created_on,       Date
     
     belongs_to :milestone

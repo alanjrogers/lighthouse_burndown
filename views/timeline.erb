@@ -1,4 +1,4 @@
-<% page_info :title => "Timeline &amp; Graph",
+<% page_info :title => "Timeline",
               :breadcrumb => [ link_to(h(@milestone.project.name), "/"), link_to(h(@milestone.name), "/project/#{@milestone.project.id}") ] %>
 
 <a href="<%= @milestone.external_url %>" class="lh-link">View in Lighthouse &rarr;</a>
@@ -24,23 +24,44 @@
 </div>
 <% end %>
 <%
-  @last_value = nil
-  def day_event_value(events, day)
+  @last_hours_left = nil
+  def hours_left_for_day(events, day)
     day_event = events.select{ |e| e.created_on.strftime("%B %e") == day.strftime("%B %e") }[0]
     value = day_event ? day_event.hours_left : 0.0
     # Are we past today? Should we project a trajectory?
     if in_future?(day)
       if is_weekday?(day)
-        value = @last_value - (@milestone.project.hours_per_day.nil? ? 0.0 : @milestone.project.hours_per_day)
+        value = @last_hours_left - (@milestone.project.hours_per_day.nil? ? 0.0 : @milestone.project.hours_per_day)
       else
-        value = @last_value
+        value = @last_hours_left
       end
       
       if value < 0.0
         value = 0.0
       end
     end
-    @last_value = value
+    @last_hours_left = value
+    value.to_f
+  end
+%>
+<%
+  @last_hours_elapsed = nil
+  def hours_elapsed_for_day(events, day)
+    day_event = events.select{ |e| e.created_on.strftime("%B %e") == day.strftime("%B %e") }[0]
+    value = day_event ? day_event.hours_elapsed : 0.0
+    # Are we past today? Should we project a trajectory?
+    if in_future?(day)
+      if is_weekday?(day)
+        value = @last_hours_elapsed + (@milestone.project.hours_per_day.nil? ? 0.0 : @milestone.project.hours_per_day)
+      else
+        value = @last_hours_elapsed
+      end
+      
+      if value < 0.0
+        value = 0.0
+      end
+    end
+    @last_hours_elapsed = value
     value.to_f
   end
 %>
@@ -54,10 +75,15 @@
       </tr>
     </tfoot>
     <tbody>
-      <tr>
+      <tr id="hours_left">
         <% @milestone.start_date.upto(@milestone.end_date) do |day| %>
-          <td class="<%= 'future' if in_future?(day) %>"><%= day_event_value(@timeline_events, day) %></td>
+          <td class="<%= 'future' if in_future?(day) %>"><%= hours_left_for_day(@timeline_events, day) %></td>
         <% end %>
+      </tr>
+      <tr id="hours_elapsed">
+          <% @milestone.start_date.upto(@milestone.end_date) do |day| %>
+            <td class="<%= 'future' if in_future?(day) %>"><%= hours_elapsed_for_day(@timeline_events, day)%></td>
+          <% end %>
       </tr>
     </tbody>
   </table>

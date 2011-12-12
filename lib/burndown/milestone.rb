@@ -103,14 +103,12 @@ module Burndown
 
       results = Lighthouse.get_milestone_tickets(self.name, self.project.remote_id, self.project.token.account, self.project.token.token, self.tickets_count)
       ticket_ids = results["tickets"] ? results["tickets"].collect{ |t| t["number"] }.join(",") : ""
-      total = 0.0
+      total_left = 0.0
+      total_elapsed = 0.0
       
       if results["tickets"]
         results["tickets"].each { |t|
-            if t['state'] == 'resolved' or t['state'] == 'invalid' then
-              next
-            end
-            tags = t['tag']
+           tags = t['tag']
             if tags.nil?
               next
             end
@@ -122,7 +120,12 @@ module Burndown
               splitsville = tag.split(":")
             
               if splitsville.size == 2 and splitsville[0] == "hours"
-                total += splitsville[1].to_f
+                if t['state'] != 'resolved' and t['state'] != 'invalid' then
+                  total_left += splitsville[1].to_f
+                end
+              end
+              if splitsville.size == 2 and splitsville[0] == "elapsed"
+                total_elapsed += splitsvile[1].to_f
               end
             end
           }
@@ -130,9 +133,9 @@ module Burndown
       
       existing_event = self.milestone_events.first(:created_on.gte => Date.today, :milestone_id => self.id)
       if (existing_event)
-        existing_event.update(:open_tickets => ticket_ids, :hours_left => total)
+        existing_event.update(:open_tickets => ticket_ids, :hours_left => total_left, :hours_elapsed => total_elapsed)
       else
-        self.milestone_events.create(:open_tickets => ticket_ids, :hours_left => total)
+        self.milestone_events.create(:open_tickets => ticket_ids, :hours_left => total_left, :hours_elapsed => total_elapsed)
       end
     end
 
