@@ -109,7 +109,7 @@
         <li><strong>Elapsed</strong> <em class="positive"><%= event.hours_elapsed_change %></em> hour<%= 's' unless event.hours_elapsed_change == 1.0 %></li>
       <% end %>
 
-      <% if event.tickets_opened == 0 && event.tickets_closed == 0 %>
+      <% if event.tickets_opened == 0 && event.tickets_closed == 0 and event.hours_elapsed_change == 0.0 and event.hours_left_change == 0.0 %>
         <li><strong>No changes</strong></li>
       <% end %>
     </ul>
