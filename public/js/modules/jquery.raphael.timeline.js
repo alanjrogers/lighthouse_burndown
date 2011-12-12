@@ -38,7 +38,7 @@ jQuery.fn.timelineGraph = function(){
     
     // Prepare variables for drawing
     var width = 790, height = 250, leftgutter = 0, rightgutter = 0, topgutter = 20, bottomgutter = 25;
-    var colorhue = 0.75, color = "#ffb240";
+    var colorhue = 0.75, color = "#ffb240", red_color = "#E6392E";
     var r = Raphael("holder", width, height);
     var txt =  {"font": '12px "Helvetica"', "font-weight": "bold", stroke: 'none', fill: '#000'},
         txt1 = {"font": '12px "Helvetica"', "font-weight": "bold", stroke: 'none', fill: '#000'},
@@ -53,6 +53,7 @@ jQuery.fn.timelineGraph = function(){
         bgp =   r.path({stroke: "none", opacity: 0.3, fill: color}).moveTo(leftgutter + X*0.5, height - bottomgutter),
         frame = r.rect(10, 10, 100, 40, 5).attr({fill: "#eee", stroke: "#ccc", "stroke-width": 2}).hide();
     
+    var red_path =  r.path({stroke: red_color, "stroke-width": 3, "stroke-linejoin": "round"});
     // Labels ?
     var label = [],
         is_label_visible = false,
@@ -106,7 +107,7 @@ jQuery.fn.timelineGraph = function(){
       var y = Math.round(height - bottomgutter - Y*elapsed_data[i].value),
           x = Math.round(leftgutter + X * (i + 0.5)),
           t = r.text(x, height - 6, labels[i].type == 'show' ? labels[i].text : "").attr(txt).toBack();
-      var dot_color = elapsed_data[i].type == 'future' ? "#c3c3c3" : "#E6392E";
+      var dot_color = elapsed_data[i].type == 'future' ? "#c3c3c3" : red_color;
       // bgp[i == 0 ? "lineTo" : "cplineTo"](x, y, 10);
       path.attr({"color": dot_color});
       if (elapsed_data[i].type != 'future') path[i == 0 ? "moveTo" : "cplineTo"](x, y, 10);

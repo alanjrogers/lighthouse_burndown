@@ -102,8 +102,11 @@
       <% if event.tickets_closed > 0 %>
         <li><strong>Closed</strong> <em class="negative"><%= event.tickets_closed %></em> ticket<%= 's' unless event.tickets_closed == 1 %></li>
       <% end %>
+      <% if event.hours_left_change < 0.0 %>
+        <li><strong>Progressed</strong> <em class="negative"><%= -1.0*event.hours_left_change %></em> hour<%= 's' unless event.hours_left_change == -1.0 %></li>
+      <% end %>
       <% if event.hours_left_change > 0.0 %>
-        <li><strong>Progressed</strong> <em class="negative"><%= event.hours_left_change %></em> hour<%= 's' unless event.hours_left_change == 1.0 %></li>
+        <li><strong>Added</strong> <em class="positive"><%= event.hours_left_change %></em> hour<%= 's' unless event.hours_left_change == 1.0 %></li>
       <% end %>
       <% if event.hours_elapsed_change > 0.0 %>
         <li><strong>Elapsed</strong> <em class="positive"><%= event.hours_elapsed_change %></em> hour<%= 's' unless event.hours_elapsed_change == 1.0 %></li>
