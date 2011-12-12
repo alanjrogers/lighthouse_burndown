@@ -110,7 +110,7 @@ jQuery.fn.timelineGraph = function(){
       var dot_color = elapsed_data[i].type == 'future' ? "#c3c3c3" : red_color;
       // bgp[i == 0 ? "lineTo" : "cplineTo"](x, y, 10);
       path.attr({"color": dot_color});
-      if (elapsed_data[i].type != 'future') path[i == 0 ? "moveTo" : "cplineTo"](x, y, 10);
+      if (elapsed_data[i].type != 'future') red_path[i == 0 ? "moveTo" : "cplineTo"](x, y, 10);
       var dot = r.circle(x, y, 4).attr({fill: dot_color, stroke: "#fff", "stroke-width": 2});
       blanket.push(r.rect(leftgutter + X * i, y-10, X, 20).attr({stroke: "none", fill: "#fff", opacity: 0}));
       var rect = blanket[blanket.length - 1];

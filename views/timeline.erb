@@ -94,7 +94,7 @@
   <% @timeline_events.each do |event| %>
   <li>
     <h3><%= event.created_on.strftime("%B %e") %></h3>
-    <span class="big"><%= "+" if event.ticket_change > 0 %><%= event.ticket_change %></span>
+    <span class="big"><%= "+" if event.hours_left_change > 0.0 %><%= event.hours_left_change %></span>
     <ul class="events">
       <% if event.tickets_opened > 0 %>
         <li><strong>Opened</strong> <em class="positive"><%= event.tickets_opened %></em> ticket<%= 's' unless event.tickets_opened == 1 %></li>
