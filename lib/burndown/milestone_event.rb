@@ -19,23 +19,23 @@ module Burndown
     end
     
     def tickets_opened
-      @tickets_opened ||= (self.open_tickets.split(',') - prev_record.open_tickets.split(',')).size
+      @tickets_opened ||= (self.open_tickets.split(',').size - prev_record.open_tickets.split(',').size)
     end
     
     def tickets_closed
-      @tickets_closed ||= (prev_record.open_tickets.split(',') - self.open_tickets.split(',')).size
+      @tickets_closed ||= (prev_record.open_tickets.split(',').size - self.open_tickets.split(',').size)
     end
     
     def ticket_change
-      tickets_opened - tickets_closed
+      @tickets_change ||= tickets_opened - tickets_closed
     end
     
     def hours_left_change
-      self.hours_left - prev_record.hours_left
+      @hours_left_change ||= self.hours_left - prev_record.hours_left
     end
 
     def hours_elapsed_change
-      self.hours_elapsed - prev_record.hours_elapsed
+      @hours_elapsed_change ||= self.hours_elapsed - prev_record.hours_elapsed
     end
 
   end
