@@ -125,7 +125,7 @@ module Burndown
                 end
               end
               if splitsville.size == 2 and splitsville[0] == "elapsed"
-                total_elapsed += splitsvile[1].to_f
+                total_elapsed += splitsville[1].to_f
               end
             end
           }
