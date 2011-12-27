@@ -33,7 +33,7 @@ module Burndown
     
     def self.get_milestone_tickets(milestone_name, remote_project_id, account, token, limit)
       get "http://#{account}.#{lighthouse_host}/projects/#{remote_project_id}/tickets.xml", :query => {
-        :q => "milestone:\"#{milestone_name}\" state:open", :limit => limit
+        :q => "milestone:\"#{milestone_name}\"", :limit => limit
       }, :headers => default_headers(token)
     end
     
