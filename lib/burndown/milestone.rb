@@ -101,13 +101,13 @@ module Burndown
         self.update(:closed_at => nil) if !self.closed_at.nil?
       end
 
-      results = Lighthouse.get_milestone_tickets(self.name, self.project.remote_id, self.project.token.account, self.project.token.token, self.tickets_count)
-      ticket_ids = results["tickets"] ? results["tickets"].collect{ |t| t["number"] }.join(",") : ""
+      tickets = Lighthouse.get_milestone_tickets(self.name, self.project.remote_id, self.project.token.account, self.project.token.token)
+      ticket_ids = tickets ? tickets.collect{ |t| t["number"] }.join(",") : ""
       total_left = 0.0
       total_elapsed = 0.0
       
-      if results["tickets"]
-        results["tickets"].each { |t|
+      if tickets
+        tickets.each { |t|
            tags = t['tag']
             if tags.nil?
               next
@@ -120,11 +120,11 @@ module Burndown
               splitsville = tag.split(":")
             
               if splitsville.size == 2 and splitsville[0] == "hours"
-                if t['state'] != 'resolved' and t['state'] != 'invalid' then
+                if t['state'] == "open" or t['state'] == "new" then
                   total_left += splitsville[1].to_f
                 end
               end
-              if splitsville.size == 2 and splitsville[0] == "elapsed"
+              if splitsville.size == 2 and splitsville[0] == "elapsed" then
                 total_elapsed += splitsville[1].to_f
               end
             end

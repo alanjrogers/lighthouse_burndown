@@ -31,10 +31,21 @@ module Burndown
       get "http://#{account}.#{lighthouse_host}/projects/#{remote_project_id}/milestones/#{remote_milestone_id}.xml", :headers => default_headers(token)
     end
     
-    def self.get_milestone_tickets(milestone_name, remote_project_id, account, token, limit)
-      get "http://#{account}.#{lighthouse_host}/projects/#{remote_project_id}/tickets.xml", :query => {
-        :q => "milestone:\"#{milestone_name}\"", :limit => limit
-      }, :headers => default_headers(token)
+    def self.get_milestone_tickets(milestone_name, remote_project_id, account, token)
+      page = 1
+      all_results = []
+      total_pages = 1
+      begin
+        result_set = get("http://#{account}.#{lighthouse_host}/projects/#{remote_project_id}/tickets.xml", :query => {:q => "milestone:\"#{milestone_name}\" sort:number" , :limit => 100, :page => page}, :headers => default_headers(token))
+        if result_set.nil?
+          break
+        end
+        total_pages = result_set["tickets"][0].to_i
+        all_results << result_set["tickets"][2..-1]
+        all_results.flatten!
+        page = page + 1
+      end while page <= total_pages
+      all_results
     end
     
     def self.create_callback(project_id, url, account, token)
