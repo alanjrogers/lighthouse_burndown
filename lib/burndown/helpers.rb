@@ -33,8 +33,11 @@ module Burndown
       range.step(step_size, &block)
     end
     
-    def in_future?(day)
-      Date.parse(day.to_s) > Date.today
+    def in_future?(day, milestone)
+      #future = Date.parse(day.to_s) > Date.today
+      # check we have
+      last_event = milestone.milestone_events.first(:order => [:created_on.desc])
+      day.to_date > last_event.created_on
     end
     
     def is_weekday?(day)
