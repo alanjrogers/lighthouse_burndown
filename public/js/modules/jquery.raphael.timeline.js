@@ -90,7 +90,7 @@ jQuery.fn.timelineGraph = function(){
           is_label_visible = true;
           r.safari();
         }, function(){
-          dot.attr("r", 5);
+          dot.attr("r", 4);
           r.safari();
           leave_timer = setTimeout(function(){
             frame.hide();
