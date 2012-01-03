@@ -37,7 +37,7 @@ module Burndown
       total_pages = 1
       begin
         result_set = get("http://#{account}.#{lighthouse_host}/projects/#{remote_project_id}/tickets.xml", :query => {:q => "milestone:\"#{milestone_name}\" sort:number" , :limit => 100, :page => page}, :headers => default_headers(token))
-        if result_set.nil?
+        if result_set.nil? or result_set["tickets"].nil?
           break
         end
         total_pages = result_set["tickets"][0].to_i
